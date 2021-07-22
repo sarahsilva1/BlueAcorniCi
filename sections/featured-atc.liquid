@@ -1,3 +1,47 @@
+<style>
+ .atcbtn {
+     box-sizing: border-box;
+     background:#856ef5;
+     border-radius: 0px;
+     border-width: 3px;
+     border-style: solid;
+     margin: -30px 0 30px;
+     position:relative;
+     text-transform: uppercase;
+     color: white;
+     text-align: center;
+ }
+ .atcbtn__corner {
+     position: absolute;
+     bottom: 0;
+     right: 0;
+     width: 1em;
+     height: 1em;
+     background-color: #fff;
+ }
+ .atcbtn__corner .atcbtn__corner-fold {
+     position: absolute;
+     width: 0;
+     height: 0;
+     border-style: solid;
+     border-width: 0 0 1em 1em;
+     border-color: transparent transparent transparent #604fb0;
+ }
+ .atcbtn__text {
+     padding: 12px;
+ }
+ .atcbtn:hover {
+     background:#fff;
+     color: black;
+     border-color: #856ef5;
+     border-style: solid;
+ }
+ .atcbtn:hover .atcbtn__corner {
+     margin-bottom: -3px;
+     margin-right: -3px;
+ }
+ </style>
+
 <div class="page-width">
   {% if section.settings.title != blank %}
     <div class="section-header text-center">
@@ -11,6 +55,12 @@
     {% for product in collection.products limit: 4 %}
       <li class="grid__item grid__item--{{section.id}} small--one-half medium-up--one-quarter">
         {% include 'product-card-grid', max_height: 350, product: product %}
+        <div class="atcbtn" onclick="Shopify.addItem({{ product.variants.first.id }}, 1); return false">
+             <div class="atcbtn__corner">
+                 <div class="atcbtn__corner-fold"></div>
+             </div>
+             <p class="atcbtn__text">Add to Cart</p>
+         </div>
       </li>
     {% else %}
 
