@@ -9685,3 +9685,44 @@ function removeImageLoadingAnimation(image) {
     imageWrapper.removeAttribute('data-image-loading-animation');
   }
 }
+
+
+/**
+  * AJAX API Calls
+  * -----------------------------------------------------------------------------
+  * Functions that interact with the Shopify APIs.
+  *
+  */
+
+ // When an item is successfully added to cart, alert the user.
+ Shopify.onItemAdded = function(line_item) {
+  alert('Product added to cart!');
+};
+
+// When an item is not added to cart, alert the user.
+Shopify.onError = function(XMLHttpRequest, textStatus) {
+  alert('An error occured.');
+};
+
+// Add an item to the shopping cart by sending a POST request with product data to /cart/add.js.
+Shopify.addItem = function(variant_id, quantity, callback) {
+  var quantity = quantity || 1;
+  var params = {
+    type: 'POST',
+    url: '/cart/add.js',
+    data: 'quantity=' + quantity + '&id=' + variant_id,
+    dataType: 'json',
+    success: function(line_item) {
+      if ((typeof callback) === 'function') {
+        callback(line_item);
+      }
+      else {
+        Shopify.onItemAdded(line_item);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus) {
+      Shopify.onError(XMLHttpRequest, textStatus);
+    }
+  };
+  jQuery.ajax(params);
+};
